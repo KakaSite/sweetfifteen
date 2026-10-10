@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun ke-15 - Rismanda Tri Hapsari</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-color: #4a4a4a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            box-sizing: border-box;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Sacramento', cursive;
+            font-size: 48px;
+            color: #ff477e;
+            margin: 0 0 10px 0;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+            outline: none;
+            border-bottom: 1px dashed transparent;
+            transition: 0.3s;
+        }
+        
+        h2:focus, p:focus, .editable-box:focus {
+            border-bottom: 1px dashed #ff477e;
+            background: rgba(255, 71, 126, 0.05);
+            border-radius: 5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        /* Foto Profil & Uploader */
+        .photo-container {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            border: 4px solid #ff477e;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(255, 71, 126, 0.3);
+            position: relative;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-label {
+            display: inline-block;
+            background: #ff477e;
+            color: white;
+            padding: 6px 14px;
+            font-size: 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(255, 71, 126, 0.3);
+        }
+
+        .upload-label:hover {
+            background: #e03b6d;
+            transform: translateY(-2px);
+        }
+
+        #uploadPhoto {
+            display: none;
+        }
+
+        /* Kue Lilin Interaktif */
+        .cake-box {
+            position: relative;
+            margin: 25px 0;
+            cursor: pointer;
+        }
+
+        .cake-emoji {
+            font-size: 70px;
+            user-select: none;
+            transition: transform 0.3s;
+        }
+
+        .candle-flame {
+            display: inline-block;
+            animation: flicker 0.6s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+            100% { transform: scale(1.15) rotate(2deg); opacity: 1; filter: drop-shadow(0 0 8px #ffeb3b); }
+        }
+
+        .hint-text {
+            font-size: 12px;
+            color: #ff477e;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        /* Kotak Pesan / Editor Teks */
+        .message-box {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+            border: 1px solid rgba(255, 71, 126, 0.2);
+        }
+
+        .message-box p {
+            margin: 0;
+            outline: none;
+        }
+
+        /* Tombol Interaktif */
+        .btn {
+            background: linear-gradient(135deg, #ff477e 0%, #ff7096 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 71, 126, 0.6);
+        }
+
+        .editor-hint {
+            font-size: 11px;
+            color: #888;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* Panduan QR Code */
+        .qr-guide {
+            font-size: 12px;
+            color: #555;
+            margin-top: 30px;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Foto Profil dengan Fitur Upload -->
+        <div class="photo-container" id="photoPreviewBox">
+            <span id="photoPlaceholder" style="font-size: 40px;">👧</span>
+        </div>
+        <label for="uploadPhoto" class="upload-label">📷 Unggah/Ganti Foto</label>
+        <input type="file" id="uploadPhoto" accept="image/*">
+
+        <!-- Header (Bisa diklik & diedit langsung) -->
+        <h1 contenteditable="true">Happy Birthday</h1>
+        <h2 contenteditable="true" id="nameTarget">Rismanda Tri Hapsari</h2>
+        <div class="subtitle" contenteditable="true">✨ Selamat Ulang Tahun yang ke-15 (Sweet Fifteen) ✨</div>
+
+        <!-- Fitur Tiup Lilin -->
+        <div class="cake-box" onclick="blowCandle()" title="Klik untuk tiup lilin!">
+            <div class="cake-emoji">
+                🎂<span id="flame" class="candle-flame">🔥</span>
+            </div>
+            <div class="hint-text" id="cakeHint">(Ketuk kue untuk meniup lilin!)</div>
+        </div>
+
+        <!-- Kotak Pesan & Doa (Bisa diketik langsung) -->
+        <div class="message-box">
+            <p contenteditable="true" id="messageText">
+                "Barakallahu fi umrik, Rismanda! Semoga di usia 15 tahun ini kamu semakin sehat, panjang umur, bahagia selalu, dimudahkan segala urusannya, makin rajin belajar, dan semua impian serta cita-citamu tercapai. Aamiin! 🥳🎂✨"
+            </p>
+        </div>
+
+        <!-- Pengirim (Bisa diedit) -->
+        <p style="font-weight: 600; font-size: 14px; margin-bottom: 5px;">Dari:</p>
+        <p contenteditable="true" style="font-family: 'Sacramento', cursive; font-size: 28px; color: #ff477e; margin-top: 0;">Sahabat Terbaikmu</p>
+
+        <button class="btn" onclick="triggerCelebration()">🎉 Rayakan Lagi! 🎉</button>
+
+        <div class="editor-hint">
+            💡 <strong>Tips Editor:</strong> Anda bisa langsung mengetik atau mengubah teks (nama, ucapan, doa) langsung di halaman ini sebelum di-scan!
+        </div>
+
+        <!-- Panduan Singkat -->
+        <div class="qr-guide">
+            <strong>🔗 Cara Membuat Barcode (QR Code):</strong><br>
+            1. Salin URL halaman GitHub Pages Anda.<br>
+            2. Buat QR Code gratis di situs seperti <em>qr-code-generator.com</em>.<br>
+            3. Scan QR Code tersebut menggunakan kamera HP!
+        </div>
+    </div>
+
+    <script>
+        // Jalankan konfeti saat pertama kali dibuka
+        window.onload = function() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        };
+
+        // Fungsi Tombol Rayakan Lagi
+        function triggerCelebration() {
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.5 }
+            });
+            playBeep();
+        }
+
+        // Fitur Tiup Lilin
+        let isBlown = false;
+        function blowCandle() {
+            const flame = document.getElementById('flame');
+            const hint = document.getElementById('cakeHint');
+            
+            if (!isBlown) {
+                flame.style.display = 'none';
+                hint.innerHTML = '✨ Lilin berhasil ditiup! Yeay! 🎉';
+                hint.style.color = '#28a745';
+                isBlown = true;
+                
+                // Ledakan konfeti meriah
+                confetti({
+                    particleCount: 80,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            } else {
+                flame.style.display = 'inline-block';
+                hint.innerHTML = '(Ketuk kue untuk meniup lilin!)';
+                hint.style.color = '#ff477e';
+                isBlown = false;
+            }
+        }
+
+        // Fitur Upload Foto
+        const uploadPhoto = document.getElementById('uploadPhoto');
+        const photoPreviewBox = document.getElementById('photoPreviewBox');
+
+        uploadPhoto.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoPreviewBox.innerHTML = `<img src="${e.target.result}" alt="Foto Rismanda">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Efek Suara Sederhana (Web Audio API)
+        function playBeep() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Nada D5
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.2);
+            } catch (e) {
